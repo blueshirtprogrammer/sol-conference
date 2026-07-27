@@ -1,151 +1,99 @@
-# Sol Conference — Codex Project Plan
-
-## Mandatory entry
-
-Read `SYSTEM_PROMPT.md`, `AGENTS.md`, `CODING_AGENT_PROMPT.md`, this file, every file under `specs/`, and `prompts/sol-voice-system.md` before implementation.
+# CODEX_PROJECT.md — Sol Room Goals, Phases and Verification Loops
 
 ## Product outcome
-Create a native cross-device communications platform where Josh can say or type commands such as “send Mum an SMS”, “call Mum”, or “start Mum, Josh and Sol”, with the action executed through the phone’s real SIM and native dialler or through a supported AI conference.
 
-## Phase 0 — Repository foundation
+Create a local-first room fabric where users connect humans, phone calls, existing AI voice applications, media, screens and working agents; explicitly control who hears, speaks, sees, acts and shares; and produce real artifacts while the conversation continues.
+
+## Phase loop
+
+Every phase follows:
+
+1. **Observe** actual device and operating-system behaviour.
+2. **Specify** exact interfaces, constraints and expected state.
+3. **Simulate** with a deterministic loopback harness.
+4. **Implement** the smallest real vertical slice.
+5. **Verify** with tests, traces, screenshots and hardware evidence.
+6. **Refine** the specification with what was proven.
+7. **Commit** one coherent phase and a truthful report.
+
+## Phase 0 — Canonical vision and hardware lab
+
 Deliver:
-- pnpm workspace and strict TypeScript configuration
-- shared lint/test/build configuration
-- Docker Compose with Postgres and Redis
-- contracts, structured errors, logging and provider interfaces
-- CI for lint, typecheck, unit tests and build
 
-Done when all required root commands pass in mock mode.
+- canonical website under `website/`;
+- synchronized system and coding-agent instructions;
+- node, route, capability and room schemas;
+- USB-C Android/Windows inspection procedure or utility;
+- acoustic baseline record;
+- decision record for the first phone-audio transport;
+- static preview deployment.
 
-## Phase 1 — Consumer web experience
-Deliver the complete responsive UI using mock event fixtures before live providers:
-- setup wizard
-- Home
-- Live Call
-- Contacts
-- History
-- Messages
-- Settings
-- Mum Mode
-- Diagnostics
-- post-call summary
+Done when the website runs without external model services, every agent entrypoint names the local-first rule, USB-C/Phone Link tests save a diagnostic bundle, and no document claims digital phone bridging has already been proven.
 
-Implement the exact interaction states in `specs/ui-ux.md`. Add Playwright journeys and accessibility checks.
+## Phase 1 — Desktop software bridge
 
-Done when screenshots and tests cover the required desktop/mobile states.
+Prove clean bidirectional audio between two ordinary Windows/browser applications.
 
-## Phase 2 — Gateway and conference state machine
-Deliver:
-- Fastify gateway
-- authenticated REST API
-- SSE or WebSocket event stream
-- Postgres persistence
-- Redis idempotency/session locks
-- conference and participant state machines
-- audit trail
-- mock Twilio/OpenAI adapters
+Deliver media graph, source/destination abstractions, app/process output capture where supported, virtual/test endpoints, operator monitor, mix-minus, input/output/all mute, emergency silence, one AI-app + one meeting-app scene, latency and feedback diagnostics.
 
-Done when browser refresh restores a live mocked call and duplicate commands cannot create duplicate calls.
+Demonstration: a person in a desktop meeting speaks with an existing AI voice app; the AI is heard in the meeting; the operator hears and speaks with both; no node receives itself; no model API is required.
 
-## Phase 3 — Twilio Conference
-Deliver:
-- inbound and outbound call flows
-- conference creation
-- participant callbacks
-- allowlisted numbers
-- one-attempt dropped-call reconnect
-- SMS provider fallback
-- request-signature verification
-- spend and duration limits
+## Phase 2 — Sol Link Android control plane
 
-Done when integration tests exercise create, join, remove, reconnect and failure reconciliation.
+Deliver pairing, contact search, selected-SIM SMS preview/commit, native dial/call policy, device notifications/media/navigation adapter interfaces, signed expiring idempotent commands, phone confirmations and `solctl`.
 
-## Phase 4 — OpenAI Realtime SIP participant
-Deliver:
-- Twilio adds OpenAI SIP participant
-- signed `realtime.call.incoming` webhook handling
-- call acceptance and session configuration
-- sideband WebSocket for tools and state
-- compiled runtime prompt from `prompts/sol-voice-system.md`
-- concise telephone persona
-- barge-in and interruption handling
-- remove Sol without ending human call
+Done when a confirmed SMS sends exactly once through the phone's SIM, a native trusted call opens/starts under policy, unknown destinations require phone confirmation, and no Twilio Voice/SMS is used.
 
-Done when staged calls preserve human participants through Sol failure/removal.
+## Phase 3 — Universal phone audio transport
 
-## Phase 5 — `solctl` and MCP
-Deliver:
-- signed JSON CLI
-- preview/commit flows
-- trusted-contact policy engine
-- MCP tools wrapping the same command service
-- audit events for every command
+Test, in order:
 
-Done when CLI tests demonstrate no action on preview, one action on commit and idempotent replay.
+1. Phone Link compatibility;
+2. wired bidirectional USB-C headset/audio bridge;
+3. dedicated Bluetooth HFP bridge hardware;
+4. network audio for calls owned by a Sol Link companion flow;
+5. acoustic fallback.
 
-## Phase 6 — Android Sol Relay
-Deliver a Kotlin/Compose app using Android Keystore, FCM, WorkManager and Room.
+Select transport from measured capability, latency, echo, reliability and app compatibility—not preference.
 
-Capabilities:
-- device pairing
-- signed-command verification
-- native `SmsManager` sending through selected SIM
-- native calls via `TelecomManager` or `ACTION_DIAL` according to policy
-- sent/delivery status where available
-- pending command confirmation UI
-- battery-optimisation guidance
-- gateway WebSocket with HTTPS fallback
+Demonstration: a native phone or WhatsApp call is digitally connected to one AI voice app and one local human with headphones, mix-minus and privacy controls.
 
-Release 1 must not replace the default dialler. Incoming-SMS gateway functionality is a separately permissioned private mode.
+## Phase 4 — Multi-agent room
 
-Done on a real Samsung Android device with the tests in `specs/acceptance-tests.md`.
+Deliver 1–16+ isolated channels, routing matrix, scenes, floor ownership, human interruption priority, bounded AI-to-AI turns, private whisper/talkback, humans-only and emergency silence.
 
-## Phase 7 — Windows Sol Desktop
-Deliver .NET 9/WinUI 3:
-- device pairing/status
-- local HTTPS or named-pipe API
-- Credential Manager storage
-- CLI installation and diagnostics
-- Phone Link setup/status guidance
-- supervised WASAPI bridge controls
+Demonstration: Sol and Gemini can hold a bounded two-turn exchange while Josh can interrupt instantly; another agent may work privately without joining audio.
 
-Do not automate ChatGPT login or claim to launch ChatGPT Voice programmatically.
+## Phase 5 — Shared visual stage and work buses
 
-Done when bridge start/stop/mute controls work without disconnecting humans.
+Deliver screen/window/camera/phone sources, shared stage, authorised viewer routes, structured artifact context, agent roles, workstream status, private critique and artifact publication.
 
-## Phase 8 — Deployment and operations
-Deliver:
-- container deployment for persistent gateway
-- web deployment
-- migrations
-- secret setup docs
-- provider console setup docs
-- observability and diagnostic bundle
-- staging-call script
-- privacy retention controls
+Demonstration: Gemini edits a visual, Claude reviews privately, Codex builds a preview and the room presents the resulting artifact while conversation continues.
 
-Done only after a real verified-number staging call and a written verification report.
+## Phase 6 — Sol Room Edge
 
-## Final definition of done
-- every phase acceptance criterion passes
-- no production TODOs or fake adapters selected in production
-- secrets and family data are absent from git
-- humans keep speaking if Sol fails
-- unknown recipients require device confirmation
-- mobile UI is one-handed and accessible
-- complete setup and recovery documentation exists
-- final report distinguishes mocked, configured, deployed and verified-live components
+Deliver Pi/embedded room controller for discovery, state, physical mute/privacy, device supervision, scene recall, local wake/activity detection, lightweight moderation and diagnostics.
+
+## Phase 7 — Sol Presence
+
+Deliver clearly labelled avatars, channel-driven lip sync/presence states, spatial audio and physical/virtual seating. Identity cloning requires explicit consent.
+
+## Phase 8 — Enterprise and optional cloud fallbacks
+
+Deliver fleet management, identity/policy, audit/retention, deployment tooling, local model/GPU integration and—only when explicitly assigned—cloud/SIP/API fallback adapters.
+
+## Final rules
+
+- A later phase may not replace a difficult earlier phase.
+- Virtual-device/local mode remains the canonical product.
+- Hardware claims require real evidence.
+- Mocks remain visibly labelled.
+- Every phase ends with exact commands, tests, demonstrations, limitations and remaining manual steps.
 
 ## First Codex instruction
 
 ```text
-Read SYSTEM_PROMPT.md, AGENTS.md, CODING_AGENT_PROMPT.md, CODEX_PROJECT.md, every file under specs/, and prompts/sol-voice-system.md.
+Read SYSTEM_PROMPT.md, VISION.md, SOL_ROOM_MASTER_SPEC.md, AGENTS.md, CODING_AGENT_PROMPT.md, CODEX_PROJECT.md and lab/USB_C_PHONE_LAB.md.
 
-Implement Phase 0 only.
-
-Do not start Phase 1 until pnpm install, lint, typecheck, tests, production build, and docker compose startup all pass. Do not leave TODOs, placeholder success responses, incomplete provider interfaces, or unverified claims. Commit the completed phase with the verification report required by CODING_AGENT_PROMPT.md.
+Implement and verify Phase 0 only. Do not start Phase 1. Do not introduce Twilio, SIP, OpenAI Realtime or another metered voice pipeline as the core architecture.
 ```
-
-## Claude Code and other agents
-
-Claude Code reads `CLAUDE.md`. GitHub Copilot coding agent reads `.github/copilot-instructions.md`. Other agents use `CODING_AGENT_PROMPT.md`. All entrypoints defer to the same `SYSTEM_PROMPT.md`, specifications, phase discipline, and acceptance tests.
