@@ -1,6 +1,6 @@
 # Start Building Sol Room Here
 
-This is the operational handoff from product vision to coding agents.
+This is the operational handoff from product vision to coding agents and desktop/work agents.
 
 ## Source branch
 
@@ -12,20 +12,58 @@ agent/sol-room-vision-site
 
 Do not start from the superseded telephony-first branch or PR.
 
+## Universal handoff
+
+For a new Codex, Claude Code, Claude Work, Gemini CLI/Antigravity, Copilot, Cursor or another repo-capable agent, paste:
+
+```text
+prompts/PASTE_INTO_ANY_CODING_AGENT.txt
+```
+
+Agents that automatically discover repository instructions should also read `llms.txt`, `SOUL.md`, their platform entry file and the integration-lab skill.
+
 ## Read order
 
-Every coding agent must read, in order:
+Every coding or work agent must read, in order:
 
 1. `SYSTEM_PROMPT.md`
 2. `VISION.md`
 3. `SOL_ROOM_MASTER_SPEC.md`
-4. `AGENTS.md`
-5. `CODING_AGENT_PROMPT.md`
-6. `CODEX_PROJECT.md`
-7. `specs/obs-plugin.md`
-8. `lab/CURRENT_HARDWARE_TOPOLOGY.md`
-9. `lab/PHONE_LINK_OBS_BUILD_PLAN.md`
-10. `lab/USB_C_PHONE_LAB.md`
+4. `SOUL.md`
+5. `AGENTS.md`
+6. `CODING_AGENT_PROMPT.md`
+7. `CODEX_PROJECT.md`
+8. `llms.txt`
+9. `specs/obs-plugin.md`
+10. `lab/CURRENT_HARDWARE_TOPOLOGY.md`
+11. `lab/PHONE_LINK_OBS_BUILD_PLAN.md`
+12. `lab/NO_CODE_INTEGRATION_LAB.md`
+13. `mcp/MCP_STACK.md`
+14. `.mcp.example.json`
+15. `lab/USB_C_PHONE_LAB.md`
+16. `skills/sol-room-integration-lab/SKILL.md`
+
+## Two coordinated tracks
+
+### Track A — no-code hardware integration lab
+
+Use existing software to test the real setup before production code:
+
+```text
+Phone Link
++ VoiceMeeter Banana
++ one existing AI voice app
++ OBS Studio
++ scrcpy
++ one OBS MCP
++ one Windows UI Automation MCP
+```
+
+Follow `lab/NO_CODE_INTEGRATION_LAB.md` exactly. Real calls, recordings, messages, streaming, driver installation and elevated actions require explicit human approval.
+
+### Track B — Phase 0B software scaffold
+
+Build the deterministic control plane in parallel. The software scaffold must let simulated nodes be replaced by proven hardware nodes one at a time.
 
 ## First implementation objective
 
@@ -67,7 +105,9 @@ packages/
 
 skills/
   sol-room/
+  sol-room-integration-lab/
 
+mcp/
 specs/
 lab/
 ```
@@ -133,14 +173,17 @@ Do not yet:
 For each assigned task:
 
 1. restate the bounded objective;
-2. inspect current code and tests;
-3. write the smallest implementation plan;
-4. implement with tests;
-5. run all relevant checks;
-6. inspect the actual output;
-7. update specifications when evidence changes an assumption;
-8. commit the coherent unit;
-9. return a truthful verification report.
+2. inspect current code, hardware state and tests;
+3. write the smallest implementation/configuration plan;
+4. simulate or configure before replacing proven components;
+5. implement with tests where code is required;
+6. run all relevant checks;
+7. inspect actual outputs and state readbacks;
+8. self-review against specifications, safety and accessibility;
+9. iterate until acceptance criteria pass;
+10. update specifications when evidence changes an assumption;
+11. commit the coherent unit;
+12. return a truthful verification report.
 
 ## Parallel-agent lanes
 
@@ -170,6 +213,8 @@ No lane may redefine shared contracts privately. Contract changes must be review
 
 ## First Codex prompt
 
+Use the complete portable prompt in `prompts/PASTE_INTO_ANY_CODING_AGENT.txt`, or the bounded form below:
+
 ```text
 You are starting the Sol Room implementation on branch agent/sol-room-vision-site.
 
@@ -192,15 +237,22 @@ checks. Commit the completed coherent slice on a new agent branch.
 
 While Codex builds Phase 0B:
 
-1. install/update Phone Link and pair one phone;
-2. install OBS Studio;
-3. enable OBS WebSocket and set a local password;
-4. confirm laptop, desktop and Pi can ping each other;
-5. label the two TVs `SOL STAGE` and `SOL WORK WALL`;
-6. keep TV audio muted for the first bridge tests;
-7. collect screenshots of Windows Sound input/output and communications-device pages;
-8. run the USB-C and Phone Link lab without inferring unsupported capabilities.
+1. install/update Phone Link and pair one trusted test phone;
+2. verify an ordinary Phone Link call manually;
+3. install OBS Studio;
+4. enable OBS WebSocket on localhost and set a local password;
+5. install VoiceMeeter Banana and reboot;
+6. install scrcpy from the official Genymobile repository;
+7. configure exactly one OBS MCP and one Windows UI Automation MCP using `mcp/MCP_STACK.md`;
+8. confirm laptop, desktop and Pi can ping each other;
+9. label the two TVs `SOL STAGE` and `SOL WORK WALL`;
+10. keep TV audio muted for the first bridge tests;
+11. run the read-only MCP smoke tests;
+12. run `lab/NO_CODE_INTEGRATION_LAB.md` incrementally;
+13. save a private, redacted evidence bundle.
 
 ## Completion boundary
 
 Phase 0B is complete when a new developer can clone the branch, run the documented commands, see the deterministic Sol Room in a browser and OBS mock/real adapter, exercise emergency silence, and understand exactly which hardware behaviours remain unverified.
+
+The no-code lab is complete when the actual Phone Link + VoiceMeeter + AI + OBS graph has either passed with remote-party confirmation or failed with enough evidence to select the next physical transport without guessing.
