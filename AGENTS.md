@@ -1,5 +1,19 @@
 # AGENTS.md — Sol Conference
 
+## Instruction hierarchy
+
+Before implementation, read in order:
+
+1. `SYSTEM_PROMPT.md`
+2. `AGENTS.md`
+3. `CODING_AGENT_PROMPT.md`
+4. `CODEX_PROJECT.md`
+5. every file under `specs/`
+6. `prompts/sol-voice-system.md`
+7. any nested `AGENTS.md` or platform-specific instruction applying to edited files
+
+`SYSTEM_PROMPT.md` is the repository-level system instruction. `prompts/sol-voice-system.md` controls the runtime voice participant and must not be confused with coding-agent instructions.
+
 ## Mission
 Build a production-grade native communications system that lets trusted people use ordinary phone calls and SMS while an AI voice participant can join conferences through supported APIs.
 
@@ -27,13 +41,14 @@ packages/command-signing
 packages/solctl
 packages/mcp-server
 packages/provider-adapters
+prompts
 specs
 docs
 skills/sol-conference
 ```
 
 ## Engineering rules
-1. Read every file in `specs/` before implementation.
+1. Read every mandatory instruction and specification file before implementation.
 2. Use official current OpenAI, Twilio, Android and Microsoft documentation for provider details.
 3. TypeScript strict mode is mandatory.
 4. Validate all external input with Zod or the platform equivalent.
@@ -47,7 +62,9 @@ skills/sol-conference
 12. Human calls must survive AI failure or removal.
 13. Do not leave production TODOs, fake success responses or unimplemented routes.
 14. Mock providers are allowed only behind complete provider interfaces.
-15. Run lint, typecheck, tests and builds before declaring a phase complete.
+15. Production must refuse mock provider selection.
+16. Run lint, typecheck, tests and builds before declaring a phase complete.
+17. Distinguish truthfully between implemented, mocked, configured, deployed and verified-live states.
 
 ## UX rules
 - Build a calm consumer communications product, not a developer dashboard.
@@ -85,4 +102,4 @@ solctl conference remove-sol ID
 ```
 
 ## Phase discipline
-Implement one phase at a time from `CODEX_PROJECT.md`. A phase is complete only when its definition of done and tests pass. Commit each phase separately with a clear summary.
+Implement one phase at a time from `CODEX_PROJECT.md`. A phase is complete only when its definition of done and tests pass. Commit each phase separately with a clear summary and the verification report required by `CODING_AGENT_PROMPT.md`.
