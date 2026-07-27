@@ -1,5 +1,9 @@
 # Sol Conference — Codex Project Plan
 
+## Mandatory entry
+
+Read `SYSTEM_PROMPT.md`, `AGENTS.md`, `CODING_AGENT_PROMPT.md`, this file, every file under `specs/`, and `prompts/sol-voice-system.md` before implementation.
+
 ## Product outcome
 Create a native cross-device communications platform where Josh can say or type commands such as “send Mum an SMS”, “call Mum”, or “start Mum, Josh and Sol”, with the action executed through the phone’s real SIM and native dialler or through a supported AI conference.
 
@@ -62,6 +66,7 @@ Deliver:
 - signed `realtime.call.incoming` webhook handling
 - call acceptance and session configuration
 - sideband WebSocket for tools and state
+- compiled runtime prompt from `prompts/sol-voice-system.md`
 - concise telephone persona
 - barge-in and interruption handling
 - remove Sol without ending human call
@@ -129,9 +134,18 @@ Done only after a real verified-number staging call and a written verification r
 - unknown recipients require device confirmation
 - mobile UI is one-handed and accessible
 - complete setup and recovery documentation exists
+- final report distinguishes mocked, configured, deployed and verified-live components
 
 ## First Codex instruction
 
 ```text
-Read AGENTS.md, CODEX_PROJECT.md and all files in specs/. Implement Phase 0 only. Do not start Phase 1 until every Phase 0 command and test passes. Commit the completed phase with a concise verification report.
+Read SYSTEM_PROMPT.md, AGENTS.md, CODING_AGENT_PROMPT.md, CODEX_PROJECT.md, every file under specs/, and prompts/sol-voice-system.md.
+
+Implement Phase 0 only.
+
+Do not start Phase 1 until pnpm install, lint, typecheck, tests, production build, and docker compose startup all pass. Do not leave TODOs, placeholder success responses, incomplete provider interfaces, or unverified claims. Commit the completed phase with the verification report required by CODING_AGENT_PROMPT.md.
 ```
+
+## Claude Code and other agents
+
+Claude Code reads `CLAUDE.md`. GitHub Copilot coding agent reads `.github/copilot-instructions.md`. Other agents use `CODING_AGENT_PROMPT.md`. All entrypoints defer to the same `SYSTEM_PROMPT.md`, specifications, phase discipline, and acceptance tests.
