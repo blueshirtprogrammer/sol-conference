@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Sol Room Status</title></head>
+<body style="margin:0;background:transparent;color:white;font:700 28px system-ui">
+  <div id="status" style="display:inline-block;padding:14px 18px;border-radius:14px;background:rgba(5,10,18,.82)">Sol Room connecting…</div>
+  <script>
+    const status = document.querySelector('#status');
+    const socket = new WebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/ws`);
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      if (message.type !== 'room.state') return;
+      const room = message.room;
+      status.textContent = room.emergencySilence ? 'EMERGENCY SILENCE' : `${room.activeScene} · rev ${room.revision}`;
+    };
+  </script>
+</body>
+</html>

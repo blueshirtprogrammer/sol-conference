@@ -2,10 +2,22 @@
   "name": "sol-room",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.14.0",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "dev": "npx serve website",
-    "build": "node scripts/validate-site.mjs",
-    "test": "node scripts/validate-site.mjs",
-    "validate": "node scripts/validate-site.mjs"
+    "dev": "node scripts/dev.mjs",
+    "lint": "node scripts/lint.mjs",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "test": "node scripts/test.mjs",
+    "build": "node scripts/build.mjs",
+    "diagnostics": "node dist/packages/diagnostics/src/cli.js",
+    "validate:site": "node scripts/validate-site.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.3"
   }
 }

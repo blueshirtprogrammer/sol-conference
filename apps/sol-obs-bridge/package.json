@@ -1,0 +1,6 @@
+{
+  "name": "@sol-room/sol-obs-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module"
+}
