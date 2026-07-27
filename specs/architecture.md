@@ -1,90 +1,95 @@
-# Architecture
+# Architecture — Sol Room Local-First System
 
-## Supported operating modes
+## Context
 
-### Native direct communications
-- SMS is sent by Android through the selected SIM.
-- Calls are placed by Android through the native telecom stack.
-- The system Phone and Messages experiences remain authoritative.
-
-### Production AI conference
 ```text
-Yvonne native phone ─┐
-Josh native phone ───┼── Twilio Conference ── OpenAI Realtime SIP (Sol)
-Browser participant ─┘              │
-                                    └── persistent gateway sideband/tools
+AI voice apps / meeting apps / media / local models
+                 ↕ ordinary device interfaces
+        Sol Fabric on desktop/workstation
+     audio · visual · room · agent · artifact buses
+             ↕ commands and transports
+ Android phones · Pi edge · USB/HFP bridges · room hardware
 ```
 
-### Supervised native ChatGPT desktop bridge
-```text
-Phone Link call audio ↔ Windows WASAPI virtual routing ↔ native ChatGPT Voice
+## Core processes
+
+### Sol Desktop
+
+Owns media discovery, local routing graph, operator monitor/talkback, per-application capture adapters, virtual endpoints, room UI and diagnostics.
+
+### Sol Link Android
+
+Owns trusted pairing, contacts, native SIM SMS, native dial/call intents, notifications, navigation/media adapters, phone confirmations and command results. It does not claim unrestricted capture of other applications' call audio.
+
+### Sol Room Edge
+
+Owns always-on room state, hardware discovery, physical mute/scene controls, lightweight moderation, wake/VAD/speaker activity, watchdog and offline privacy policy.
+
+### Room service
+
+Owns nodes, routes, scenes, roles, floors, private channels, workstreams, artifacts and the event ledger. It may initially run inside Sol Desktop and later move to Edge.
+
+## Node and route
+
+```ts
+type Node = {
+  id: string;
+  kind: "human" | "phone" | "ai-app" | "working-agent" | "local-model" |
+        "meeting-app" | "media" | "screen" | "camera" | "artifact" | "room-device";
+  label: string;
+  presence: "offline" | "available" | "connected" | "degraded";
+  capabilities: { hear: boolean; speak: boolean; see: boolean; act: boolean; share: boolean };
+};
+
+type Route = {
+  id: string;
+  sourceNodeId: string;
+  destinationNodeId: string;
+  media: "audio" | "video" | "screen" | "artifact";
+  state: "routed" | "isolated" | "muted" | "unavailable";
+  gainDb?: number;
+  sceneId?: string;
+};
 ```
-This is optional, manually started and never the production dependency.
 
-## Components
+Audio self-routes are invalid. The graph validator also rejects short feedback cycles.
 
-### Web
-Consumer dashboard and Mum Mode. Receives confirmed state through SSE/WebSocket. Never calls provider APIs directly.
+## Media buses
 
-### Gateway
-Persistent Node.js/Fastify service responsible for:
-- authentication and authorisation
-- state machines
-- Twilio/OpenAI webhooks
-- provider reconciliation
-- signed device commands
-- audit records
-- event streaming
+- Program bus — what public/remote participants hear.
+- Per-agent input buses — isolated mix-minus for each AI application.
+- Human monitor — what the operator hears.
+- Talkback — operator-to-selected-node private speech.
+- Media bus — deliberately shared desktop/phone content.
+- Safety bus — humans-only and emergency silence.
+- Shared stage — selected visual/artifact source.
 
-### Android Relay
-Private Android application responsible for:
-- signed command verification
-- native SMS and calls
-- SIM selection
-- device confirmations
-- status callbacks
+## Agent and artifact separation
 
-### Windows Desktop
-Native Windows companion responsible for:
-- pairing and diagnostics
-- local `solctl` service
-- Credential Manager integration
-- optional supervised audio bridge
+Working agents receive structured, scoped tasks and authorised artifacts. They do not inherit unrestricted room audio, visuals or tools.
 
-### CLI and MCP
-`solctl` is the dependable automation interface. MCP wraps the same service but is never the sole execution path.
+## Floor state
 
-## Connectivity
-- Primary command path: HTTPS/WebSocket over mobile data or Wi-Fi.
-- Wake-up: FCM.
-- Local optimisation: encrypted LAN connection where available.
-- Bluetooth: Phone Link audio only.
-- USB: development, ADB, recovery and charging only.
+```ts
+type FloorState = {
+  ownerNodeId?: string;
+  queue: string[];
+  maxAgentTurnsWithoutHuman: number;
+  humanInterruptsImmediately: boolean;
+  agentLoopState: "allowed" | "paused" | "blocked";
+};
+```
 
-## Core entities
-User, Contact, Device, DeviceKey, Command, Confirmation, Conference, Participant, CallAttempt, RealtimeSession, TranscriptEvent, ToolExecution, ConsentRecord, AuditEvent, Notification.
+## Transport separation
 
-## State machines
-Conference: `created | dialling | waiting | active | ending | completed | failed`.
+Control and media are independent.
 
-Participant: `queued | ringing | connected | muted | held | left | failed`.
+Control candidates: authenticated LAN WebSocket, hosted relay, FCM/HTTPS and USB/ADB for development.
 
-Command: `previewed | awaiting_confirmation | queued | acknowledged | executing | completed | failed | expired | cancelled`.
+Phone-audio candidates: Phone Link compatibility, wired bidirectional headset bridge, dedicated HFP bridge, controlled companion-app network audio, and the acoustic baseline.
 
-## Security invariants
-- Commands are Ed25519-signed or use an equivalently strong asymmetric scheme.
-- Every command has an ID, device ID, requested action, recipient, issued time and expiry.
-- Replays return the prior result and never repeat the action.
-- Contact permissions are explicit and default restrictive.
-- Provider signatures are checked over raw bodies.
-- Production refuses mock adapters.
-- Sensitive fields are encrypted at rest.
-- Logs redact credentials, OTPs, payment data and protected identifiers.
+A plain USB cable is not a phone-audio transport without evidence.
 
-## Reliability invariants
-- AI failure never ends the human conference.
-- Web UI failure never ends an active call.
-- Browser refresh reconstructs state from the gateway.
-- Reconnect is at most one automatic attempt unless explicitly changed.
-- Provider callbacks are idempotent and reconciled against current provider state.
-- Maximum conference duration and spend limits are enforced server-side.
+## Cloud fallback
+
+Optional SIP/PSTN and hosted model adapters may support unattended/PC-off operation later. They cannot alter the local-first room model or become the MVP dependency.
