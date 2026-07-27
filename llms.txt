@@ -1,0 +1,70 @@
+# Sol Room / Sol Conference
+
+Sol Room is a local-first, vendor-neutral operating environment that connects humans, phones, meetings, media, existing AI voice applications and working agents through explicit audio, visual, control and artifact buses.
+
+Current source branch:
+agent/sol-room-vision-site
+
+Current implementation phase:
+Phase 0B — buildable control-plane scaffold, deterministic room/phone simulation and external OBS WebSocket proof.
+
+Canonical read order:
+1. SYSTEM_PROMPT.md
+2. VISION.md
+3. SOL_ROOM_MASTER_SPEC.md
+4. SOUL.md
+5. START_BUILD_HERE.md
+6. AGENTS.md
+7. CODING_AGENT_PROMPT.md
+8. CODEX_PROJECT.md
+9. specs/obs-plugin.md
+10. lab/CURRENT_HARDWARE_TOPOLOGY.md
+11. lab/PHONE_LINK_OBS_BUILD_PLAN.md
+12. lab/NO_CODE_INTEGRATION_LAB.md
+13. mcp/MCP_STACK.md
+14. lab/USB_C_PHONE_LAB.md
+
+Core architecture:
+- Microsoft Phone Link is the first native-cellular transport adapter.
+- VoiceMeeter Banana is the temporary lab audio matrix and supplies two virtual mix-minus buses.
+- OBS Studio is the shared-stage compositor and operator-facing visual body.
+- OBS WebSocket is used before a native OBS plugin.
+- A Windows UI Automation MCP server inspects and operates Phone Link semantically.
+- Sol Fabric will become the authoritative Windows media, policy and room service.
+- Raspberry Pi 5 becomes the room coordinator and physical safety/control node.
+- Existing ChatGPT, Claude, Gemini and other applications are ordinary media nodes.
+- Twilio, SIP and metered realtime model APIs are optional later fallbacks only.
+
+First no-code lab:
+Phone Link + VoiceMeeter Banana + one AI voice app + OBS + scrcpy + OBS MCP + Windows UI Automation MCP.
+
+First mix-minus buses:
+- B1 feeds the AI microphone with human + caller, excluding AI output.
+- B2 feeds Phone Link with human + AI, excluding caller output.
+
+Preferred community proof tools:
+- OBS control: obs-mcp 1.1.0 or sbroenne OBS MCP extension.
+- Windows automation: sbroenne/mcp-windows or FlaUI-MCP.
+- Android display/control: Genymobile scrcpy.
+- Temporary audio routing: VoiceMeeter Banana.
+
+Do not:
+- claim Phone Link accepts a virtual microphone until tested;
+- claim cellular or WhatsApp audio is captured because ordinary Android media audio works;
+- rebuild Phone Link before the adapter proof;
+- begin with a custom audio driver;
+- begin with a native OBS plugin;
+- use coordinate clicking when UI Automation or OBS APIs are available;
+- expose OBS WebSocket beyond localhost during the first lab;
+- commit passwords, phone numbers, transcripts, recordings or device identifiers;
+- let OBS become the authoritative room-state or call-continuity process;
+- start streaming, recording, calls or messages without explicit human confirmation.
+
+Evidence standard:
+A capability is verified only by an automated test, actual OS state, UI Automation snapshot, OBS state readback, audio capture, hardware diagnostic, screenshot/video or written reproducible procedure. A compilation result or successful mock is not hardware evidence.
+
+First coding-agent objective:
+Read prompts/PASTE_INTO_ANY_CODING_AGENT.txt and implement Phase 0B only. Produce a pnpm workspace, shared contracts, deterministic simulator, Sol Fabric local service, browser room console, typed OBS adapter with mock, phone adapter simulator, semantic command handlers, emergency silence, diagnostics and CI.
+
+First human objective:
+Run lab/NO_CODE_INTEGRATION_LAB.md and record the exact endpoint names and behaviour of Phone Link, VoiceMeeter, OBS and the selected MCP servers.
