@@ -1,0 +1,49 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@playwright/mcp@0.0.75"]
+    },
+    "obs": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "obs-mcp@1.1.0"],
+      "env": {
+        "OBS_WEBSOCKET_URL": "ws://127.0.0.1:4455",
+        "OBS_WEBSOCKET_PASSWORD": "${OBS_WEBSOCKET_PASSWORD}"
+      }
+    },
+    "windows": {
+      "command": "C:\\Users\\<USER>\\.sol-room\\bin\\windows-mcp\\Sbroenne.WindowsMcp.exe"
+    },
+    "homeassistant": {
+      "command": "mcp-proxy",
+      "args": [
+        "--transport=streamablehttp",
+        "--stateless",
+        "http://<SOL_HOME_IP>:8123/api/mcp"
+      ],
+      "env": {
+        "API_ACCESS_TOKEN": "${HOMEASSISTANT_TOKEN}"
+      }
+    }
+  },
+  "policy": {
+    "default": "read-only-smoke-test",
+    "requireConfirmation": [
+      "phone.call.start",
+      "phone.call.answer",
+      "phone.call.end",
+      "phone.sms.send",
+      "obs.recording.start",
+      "obs.streaming.start",
+      "homeassistant.control"
+    ],
+    "forbidden": [
+      "read-authentication-codes",
+      "disable-device-security",
+      "install-unapproved-apk",
+      "commit-secrets",
+      "raw-adb-shell-without-review"
+    ]
+  }
+}

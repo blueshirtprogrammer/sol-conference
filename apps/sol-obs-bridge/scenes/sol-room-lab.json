@@ -1,0 +1,16 @@
+{
+  "name": "SOL ROOM LAB",
+  "source": "Phase 0B deterministic template",
+  "scenes": [
+    "01 LAB OVERVIEW",
+    "02 PHONE CALL",
+    "03 AI ROOM",
+    "04 WORK WALL",
+    "05 HUMANS ONLY",
+    "06 EMERGENCY SILENCE"
+  ],
+  "notes": [
+    "Import or reproduce these as ordinary editable OBS scenes.",
+    "No recording, streaming, call or audio-routing capability is implied by this template."
+  ]
+}

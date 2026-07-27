@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "sol-room-desktop-stack",
+  "version": "0.1.0",
+  "platform": "windows-11-x64",
+  "roles": {
+    "desktop": [
+      "sol-work-node",
+      "home-assistant-host",
+      "agent-orchestrator",
+      "artifact-storage",
+      "optional-obs-render-node"
+    ],
+    "laptop": [
+      "sol-fabric-live-audio-node",
+      "phone-link-host",
+      "obs-stage-node",
+      "voice-app-host"
+    ]
+  },
+  "network": {
+    "homeAssistantBind": "router-facing-ethernet-only",
+    "directMediaSubnet": "10.77.0.0/24",
+    "directMediaGateway": null,
+    "piRequired": false
+  },
+  "packages": [
+    {
+      "name": "Git",
+      "source": "winget",
+      "id": "Git.Git",
+      "required": true
+    },
+    {
+      "name": "Node.js LTS",
+      "source": "winget",
+      "id": "OpenJS.NodeJS.LTS",
+      "required": true
+    },
+    {
+      "name": "OBS Studio",
+      "source": "winget",
+      "id": "OBSProject.OBSStudio",
+      "required": true
+    },
+    {
+      "name": "scrcpy",
+      "source": "winget",
+      "id": "Genymobile.scrcpy",
+      "required": true
+    },
+    {
+      "name": "VirtualBox",
+      "source": "winget",
+      "id": "Oracle.VirtualBox",
+      "requiredWhen": "hyper-v-unavailable"
+    },
+    {
+      "name": "VoiceMeeter Banana",
+      "source": "official-manual-checkpoint",
+      "required": true,
+      "reason": "audio-driver licence acceptance and reboot must remain visible"
+    }
+  ],
+  "mcp": {
+    "playwright": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@playwright/mcp@0.0.75"],
+      "defaultEnabled": true,
+      "scope": "browser-automation"
+    },
+    "obs": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "obs-mcp@1.1.0"],
+      "defaultEnabled": true,
+      "scope": "localhost-obs-websocket"
+    },
+    "windows": {
+      "distribution": "sbroenne/mcp-windows standalone release or plugin bundle",
+      "defaultEnabled": true,
+      "scope": "non-elevated-windows-uia",
+      "rawCoordinateFallback": "supervised-only"
+    },
+    "homeAssistant": {
+      "transport": "streamable-http",
+      "url": "http://<SOL_HOME_IP>:8123/api/mcp",
+      "authentication": "oauth-or-local-token",
+      "defaultEnabled": false,
+      "enableAfter": "home-assistant-onboarding-and-entity-exposure"
+    }
+  },
+  "homeAssistant": {
+    "vmName": "SOL-HOME",
+    "vCpu": 2,
+    "memoryMb": 4096,
+    "diskGb": 32,
+    "firmware": "uefi",
+    "secureBoot": false,
+    "releaseApi": "https://api.github.com/repos/home-assistant/operating-system/releases/latest"
+  },
+  "humanCheckpoints": [
+    "uac",
+    "reboot",
+    "voicemeeter-driver-and-licence",
+    "phone-link-pairing",
+    "android-usb-debug-authorisation",
+    "obs-websocket-password",
+    "home-assistant-onboarding",
+    "home-assistant-authentication",
+    "agent-account-logins",
+    "consequential-action-confirmation"
+  ],
+  "forbidden": [
+    "commit-secrets",
+    "silent-call-placement",
+    "silent-message-send",
+    "silent-recording",
+    "silent-streaming",
+    "disable-windows-security",
+    "enable-test-signing-for-first-lab",
+    "use-damaged-raspberry-pi",
+    "bind-home-assistant-to-direct-media-nic",
+    "claim-phone-audio-before-real-device-proof"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "@sol-room/sol-fabric-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module"
+}

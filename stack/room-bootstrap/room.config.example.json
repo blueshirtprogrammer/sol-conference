@@ -1,0 +1,64 @@
+{
+  "roomName": "SOL ROOM LAB",
+  "routerLan": {
+    "subnet": "auto-detect",
+    "desktopAdapter": "<DESKTOP_ROUTER_NIC_ALIAS>",
+    "laptopAdapter": "<LAPTOP_DOCK_ROUTER_NIC_ALIAS>",
+    "profile": "Private"
+  },
+  "directMedia": {
+    "enabled": true,
+    "subnet": "10.77.0.0/24",
+    "laptop": {
+      "adapter": "<LAPTOP_DIRECT_NIC_ALIAS>",
+      "address": "10.77.0.1",
+      "prefixLength": 24,
+      "gateway": null,
+      "dns": []
+    },
+    "desktop": {
+      "adapter": "<DESKTOP_DIRECT_NIC_ALIAS>",
+      "address": "10.77.0.2",
+      "prefixLength": 24,
+      "gateway": null,
+      "dns": []
+    }
+  },
+  "deviceGateway": {
+    "usbStorage": {
+      "mode": "explicit-smb-allowlist",
+      "defaultAccess": "blocked",
+      "shareRoot": "C:\\SolRoom\\SharedDevices",
+      "allowReadWrite": false
+    },
+    "genericUsb": {
+      "mode": "virtualhere-optional",
+      "defaultAccess": "blocked",
+      "allowlistedVendorProductIds": []
+    },
+    "android": {
+      "mode": "adb-scrcpy-through-laptop",
+      "rawUsbLease": false
+    },
+    "audio": {
+      "mode": "vban-then-sol-fabric",
+      "directMediaPreferred": true
+    },
+    "video": {
+      "mode": "distroav-ndi",
+      "directMediaPreferred": true
+    },
+    "displays": {
+      "solStage": "laptop-dock-hdmi",
+      "solWorkWall": "desktop-gpu-hdmi",
+      "networkDisplay": "spacedesk-optional",
+      "tvControl": "home-assistant-google-cast"
+    }
+  },
+  "security": {
+    "publicNetworkSharing": false,
+    "unknownUsbDefault": "blocked",
+    "consequentialActionsRequireConfirmation": true,
+    "secretsInGit": false
+  }
+}

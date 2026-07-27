@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sol Room Operator Console</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">PHASE 0B · DETERMINISTIC SIMULATOR</p>
+      <h1>Sol Room</h1>
+    </div>
+    <div id="connection" class="status" role="status" aria-live="polite">Connecting…</div>
+  </header>
+  <main>
+    <section class="stage" aria-labelledby="stage-title">
+      <div>
+        <p class="eyebrow">Shared stage</p>
+        <h2 id="stage-title">01 LAB OVERVIEW</h2>
+        <p id="safety-state">Normal routing</p>
+      </div>
+      <div class="scene-actions" aria-label="Scene controls">
+        <button data-scene="01 LAB OVERVIEW">Lab overview</button>
+        <button data-scene="03 AI ROOM">AI room</button>
+        <button data-scene="05 HUMANS ONLY">Humans only scene</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="participants-title">
+      <div class="section-heading">
+        <h2 id="participants-title">Participants</h2>
+        <span id="revision">Revision 0</span>
+      </div>
+      <div id="participants" class="participants"></div>
+    </section>
+
+    <section aria-labelledby="routes-title">
+      <div class="section-heading">
+        <h2 id="routes-title">Explicit audio routes</h2>
+        <span>Mix-minus simulator</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Source</th><th>Destination</th><th>Requested</th><th>Effective</th><th>Block</th></tr></thead>
+          <tbody id="routes"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <aside class="safety-controls" aria-label="Room safety controls">
+    <button id="humans-only" class="secondary" aria-pressed="false">Humans only</button>
+    <button id="emergency" class="danger" aria-pressed="false">Emergency silence</button>
+  </aside>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
