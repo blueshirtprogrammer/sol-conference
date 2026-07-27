@@ -9,14 +9,20 @@ Build Sol Room from one reliable local digital bridge into a vendor-neutral room
 1. `SYSTEM_PROMPT.md`
 2. `VISION.md`
 3. `SOL_ROOM_MASTER_SPEC.md`
-4. `START_BUILD_HERE.md`
-5. `CODING_AGENT_PROMPT.md`
-6. `CODEX_PROJECT.md`
-7. `specs/obs-plugin.md`
-8. `lab/CURRENT_HARDWARE_TOPOLOGY.md`
-9. `lab/PHONE_LINK_OBS_BUILD_PLAN.md`
-10. `lab/USB_C_PHONE_LAB.md`
-11. `website/`
+4. `SOUL.md`
+5. `START_BUILD_HERE.md`
+6. `CODING_AGENT_PROMPT.md`
+7. `CODEX_PROJECT.md`
+8. `llms.txt`
+9. `specs/obs-plugin.md`
+10. `lab/CURRENT_HARDWARE_TOPOLOGY.md`
+11. `lab/PHONE_LINK_OBS_BUILD_PLAN.md`
+12. `lab/NO_CODE_INTEGRATION_LAB.md`
+13. `mcp/MCP_STACK.md`
+14. `.mcp.example.json`
+15. `lab/USB_C_PHONE_LAB.md`
+16. `skills/sol-room-integration-lab/SKILL.md`
+17. `website/`
 
 Twilio, SIP and metered realtime APIs are optional fallback work only. They are not the MVP and may not replace local virtual-device, Phone Link, OBS or hardware-lab work.
 
@@ -26,11 +32,12 @@ Twilio, SIP and metered realtime APIs are optional fallback work only. They are 
 - Existing AI applications are ordinary media nodes.
 - The phone remains authoritative for SIM, contacts, native calls and native messages.
 - Microsoft Phone Link is the first native-cellular transport adapter; Sol Room does not rebuild Phone Link before the bridge proof.
+- VoiceMeeter Banana is the temporary lab matrix; proven routes later become Sol Fabric contracts.
 - The Windows/desktop fabric owns local routing, monitoring and virtual endpoints.
 - OBS is the visual body and operator console, not the room authority or call-continuity layer.
 - Sol Fabric remains authoritative for room state, audio routing, policy, MCP and emergency control.
 - The external OBS WebSocket proof precedes the native OBS plugin.
-- Raspberry Pi/edge hardware may own room state replication, physical controls and lightweight moderation.
+- Raspberry Pi/edge hardware may own room-state replication, physical controls and lightweight moderation.
 - Media participation and tool permission are separate.
 - Every route is explicit and every node receives mix-minus.
 - Humans can silence or isolate every AI immediately.
@@ -72,6 +79,10 @@ packages/
   artifact-bus/
   diagnostics/
   test-harness/
+skills/
+  sol-room/
+  sol-room-integration-lab/
+mcp/
 website/
 specs/
 lab/
@@ -96,6 +107,10 @@ pitch/
 14. OBS restart or failure must not terminate calls or destroy room truth.
 15. A native plugin or driver is not complete merely because it compiles.
 16. Shared command handlers must serve the web UI, OBS integration and MCP; do not create divergent control logic.
+17. Use exactly one OBS MCP and one Windows-control MCP in the lab context.
+18. Treat community MCP servers as third-party code; pin, inspect, run locally and restrict permissions.
+19. Real calls, messages, streaming, recording, driver installation and elevation require explicit human confirmation.
+20. Keep MCP passwords and machine-specific paths in local configuration, not git.
 
 ## Required domain model
 
@@ -131,10 +146,17 @@ The media graph and agent/tool graph must not be the same object.
 
 ## Definition of evidence
 
-A feature is verified only when supported by an automated test, real-device diagnostic, screenshot/video, audio loopback capture, state trace, operating-system event or written reproduction procedure.
+A feature is verified only when supported by an automated test, real-device diagnostic, screenshot/video, audio loopback capture, state trace, operating-system event, remote-party confirmation or written reproduction procedure.
 
 A coding agent may not mark a real device, Phone Link, audio, OBS plugin or driver capability complete merely because code compiles or a mock passes.
 
 ## Current phase
 
-Begin with Phase 0B in `START_BUILD_HERE.md`: the buildable control-plane scaffold, deterministic room/phone simulator and external OBS WebSocket proof. Do not begin cloud telephony, production audio drivers or the native OBS plugin before its gate passes.
+Coordinate two tracks:
+
+- run the supervised no-code proof in `lab/NO_CODE_INTEGRATION_LAB.md`;
+- build Phase 0B in `START_BUILD_HERE.md`.
+
+Do not begin cloud telephony, production audio drivers or the native OBS plugin before their gates pass.
+
+For a fresh cross-agent session, use `prompts/PASTE_INTO_ANY_CODING_AGENT.txt`.
