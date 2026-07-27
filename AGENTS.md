@@ -1,105 +1,109 @@
-# AGENTS.md — Sol Conference
-
-## Instruction hierarchy
-
-Before implementation, read in order:
-
-1. `SYSTEM_PROMPT.md`
-2. `AGENTS.md`
-3. `CODING_AGENT_PROMPT.md`
-4. `CODEX_PROJECT.md`
-5. every file under `specs/`
-6. `prompts/sol-voice-system.md`
-7. any nested `AGENTS.md` or platform-specific instruction applying to edited files
-
-`SYSTEM_PROMPT.md` is the repository-level system instruction. `prompts/sol-voice-system.md` controls the runtime voice participant and must not be confused with coding-agent instructions.
+# AGENTS.md — Sol Room Engineering Contract
 
 ## Mission
-Build a production-grade native communications system that lets trusted people use ordinary phone calls and SMS while an AI voice participant can join conferences through supported APIs.
 
-## Non-negotiable architecture
-- Humans use their phone's native dialler, cellular service and ordinary SMS.
-- Android is the programmable SIM gateway through a private `Sol Relay` app.
-- Windows runs `Sol Desktop`, `solctl`, optional MCP tools and a supervised audio bridge.
-- Multi-party AI calls use Twilio Conference plus OpenAI Realtime SIP.
-- The native ChatGPT desktop app may be routed into a supervised conference as an optional bridge, but must never be reverse engineered or treated as the production voice backend.
-- Wi-Fi/mobile data carries commands; Bluetooth is only for Phone Link call audio; USB is for development, charging and recovery.
+Build Sol Room from one reliable local digital bridge into a vendor-neutral room operating system for humans, phones, media, existing AI voice applications and working agents.
 
-## Repository expectations
-Use a strict TypeScript pnpm monorepo for web, gateway, contracts, CLI and MCP components. Use Kotlin/Jetpack Compose for Android. Use .NET 9/WinUI 3 for Windows.
+## Mandatory read order
 
-Target structure:
+1. `SYSTEM_PROMPT.md`
+2. `VISION.md`
+3. `SOL_ROOM_MASTER_SPEC.md`
+4. `CODING_AGENT_PROMPT.md`
+5. `CODEX_PROJECT.md`
+6. `lab/USB_C_PHONE_LAB.md`
+7. `website/`
+
+The older telephony-first material under `specs/` is superseded where it conflicts with these canonical files. Twilio, SIP and metered realtime APIs are optional fallback work only.
+
+## Architectural invariants
+
+- Local virtual devices are the default compatibility layer.
+- Existing AI applications are ordinary media nodes.
+- The phone remains authoritative for SIM, contacts, native calls and native messages.
+- The Windows/desktop fabric owns local routing, monitoring and virtual endpoints.
+- Raspberry Pi/edge hardware may own room state, physical controls and lightweight moderation.
+- Media participation and tool permission are separate.
+- Every route is explicit and every node receives mix-minus.
+- Humans can silence or isolate every AI immediately.
+- AI-to-AI turns are bounded and human speech has priority.
+
+## Target repository shape
 
 ```text
-apps/web
-apps/gateway
-apps/android-relay
-apps/windows-desktop
-packages/contracts
-packages/device-commands
-packages/command-signing
-packages/solctl
-packages/mcp-server
-packages/provider-adapters
-prompts
-specs
-docs
-skills/sol-conference
+apps/
+  sol-desktop/
+  sol-link-android/
+  sol-room-web/
+  sol-room-edge/
+packages/
+  media-graph/
+  virtual-devices/
+  room-state/
+  device-commands/
+  agent-adapters/
+  artifact-bus/
+  contracts/
+  diagnostics/
+website/
+specs/
+lab/
+pitch/
 ```
 
 ## Engineering rules
-1. Read every mandatory instruction and specification file before implementation.
-2. Use official current OpenAI, Twilio, Android and Microsoft documentation for provider details.
-3. TypeScript strict mode is mandatory.
-4. Validate all external input with Zod or the platform equivalent.
-5. Verify Twilio and OpenAI webhook signatures against raw request bodies.
-6. Every outward action uses preview then commit, unless a trusted-contact policy explicitly allows direct execution after conversational confirmation.
-7. Commands are signed, timestamped, idempotent, short-lived and device-bound.
-8. Never commit secrets, phone numbers, private profiles, recordings or transcripts.
-9. Unknown recipients require device-level confirmation.
-10. Emergency, premium and international numbers may never be dialled automatically.
-11. Recording is off by default. AI participation is disclosed.
-12. Human calls must survive AI failure or removal.
-13. Do not leave production TODOs, fake success responses or unimplemented routes.
-14. Mock providers are allowed only behind complete provider interfaces.
-15. Production must refuse mock provider selection.
-16. Run lint, typecheck, tests and builds before declaring a phase complete.
-17. Distinguish truthfully between implemented, mocked, configured, deployed and verified-live states.
 
-## UX rules
-- Build a calm consumer communications product, not a developer dashboard.
-- Primary actions must be usable one-handed on mobile.
-- Minimum control target: 48x48 px.
-- WCAG 2.2 AA.
-- Never expose SIP, TwiML, SIDs, webhooks or Realtime IDs outside Diagnostics.
-- Every visual state must be backed by confirmed local pending state or backend/provider events.
+1. Use strict typing and stable schemas between processes.
+2. Model source, destination and route independently.
+3. Make externally visible actions idempotent.
+4. Validate every command, device identity and permission.
+5. Never log secrets, full phone numbers, authentication codes or protected content.
+6. Do not claim a transport works until tested on real hardware.
+7. Build labelled simulators for unavailable hardware.
+8. Keep provider and app adapters behind interfaces.
+9. Keep DSP and room-state logic testable without GUI or hardware.
+10. Reject direct self-routes and short feedback cycles.
+11. Provide a physical/software emergency mute path early.
+12. Meet WCAG 2.2 AA and support keyboard, screen reader, reduced motion and 200% zoom.
+13. Run relevant checks and provide evidence before completing a phase.
 
-## Required commands
-The final repository must support:
+## Required domain model
 
-```bash
-pnpm install
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm build
-docker compose up
+```ts
+type Capability = "hear" | "speak" | "see" | "act" | "share";
+
+type NodeKind =
+  | "human"
+  | "phone"
+  | "ai-app"
+  | "working-agent"
+  | "local-model"
+  | "meeting-app"
+  | "media"
+  | "screen"
+  | "camera"
+  | "artifact"
+  | "room-device";
+
+type RouteState = "routed" | "isolated" | "muted" | "unavailable";
 ```
 
-The CLI must support JSON output:
+The media graph and agent/tool graph must not be the same object.
 
-```bash
-solctl device list
-solctl device status
-solctl sms preview --contact mum --message "..."
-solctl sms send --confirmation TOKEN
-solctl call preview --contact mum
-solctl call start --confirmation TOKEN --mode native
-solctl call start --confirmation TOKEN --mode conference
-solctl conference create --mum --sol
-solctl conference add-sol ID
-solctl conference remove-sol ID
-```
+## UI principles
 
-## Phase discipline
-Implement one phase at a time from `CODEX_PROJECT.md`. A phase is complete only when its definition of done and tests pass. Commit each phase separately with a clear summary and the verification report required by `CODING_AGENT_PROMPT.md`.
+- Premium communications product, not a developer console.
+- Live room is the primary interface.
+- Audio, visual, tool and work state appear separately.
+- Humans-only, private operator channel and emergency silence remain visible.
+- Provider jargon belongs only in diagnostics.
+
+## Definition of evidence
+
+A feature is verified only when supported by an automated test, real-device diagnostic, screenshot/video, audio loopback capture, state trace, operating-system event or written reproduction procedure.
+
+A coding agent may not mark a real device or audio capability complete merely because code compiles.
+
+## Current phase
+
+Begin with Phase 0 in `CODEX_PROJECT.md`. Do not start cloud telephony.
