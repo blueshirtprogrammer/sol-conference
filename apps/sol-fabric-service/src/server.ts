@@ -22,7 +22,6 @@ const phone = new DeterministicPhoneAdapter();
 const obs = createObsAdapter();
 const sockets = new Set<Duplex>();
 
-await obs.connect();
 
 const server = createServer(async (request, response) => {
   try {

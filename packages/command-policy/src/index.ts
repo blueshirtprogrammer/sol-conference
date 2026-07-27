@@ -30,18 +30,22 @@ export async function handleSemanticCommand(
         return { ok: true, commandType: command.type, room, data: obsState };
       }
       case "room.emergency_silence.set": {
-        if (command.enabled) {
-          await context.obs.activateScene("06 EMERGENCY SILENCE");
-        }
         const room = context.room.apply(command);
-        return { ok: true, commandType: command.type, room };
+        const warnings = command.enabled
+          ? await tryActivateSafetyScene(context.obs, "06 EMERGENCY SILENCE")
+          : [];
+        return warnings.length === 0
+          ? { ok: true, commandType: command.type, room }
+          : { ok: true, commandType: command.type, room, warnings };
       }
       case "room.humans_only.set": {
-        if (command.enabled) {
-          await context.obs.activateScene("05 HUMANS ONLY");
-        }
         const room = context.room.apply(command);
-        return { ok: true, commandType: command.type, room };
+        const warnings = command.enabled
+          ? await tryActivateSafetyScene(context.obs, "05 HUMANS ONLY")
+          : [];
+        return warnings.length === 0
+          ? { ok: true, commandType: command.type, room }
+          : { ok: true, commandType: command.type, room, warnings };
       }
       case "room.participant.mute": {
         const room = context.room.apply(command);
@@ -59,6 +63,16 @@ export async function handleSemanticCommand(
       room: context.room.getState(),
       error: error instanceof Error ? error.message : String(error),
     };
+  }
+}
+
+async function tryActivateSafetyScene(obs: ObsAdapter, sceneName: string): Promise<string[]> {
+  try {
+    await obs.activateScene(sceneName);
+    return [];
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return [`Authoritative safety state applied; OBS scene sync failed: ${message}`];
   }
 }
 

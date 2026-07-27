@@ -73,6 +73,7 @@ export interface CommandResult<T = unknown> {
   readonly room: RoomState;
   readonly data?: T;
   readonly error?: string;
+  readonly warnings?: readonly string[];
 }
 
 export interface HealthStatus {

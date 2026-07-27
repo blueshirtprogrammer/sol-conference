@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { MockObsAdapter } from "../../obs-adapter/src/index.js";
+import type { ObsAdapter } from "../../obs-adapter/src/index.js";
 import { DeterministicPhoneAdapter } from "../../phone-link-adapter/src/index.js";
 import { createDeterministicRoomStore } from "../../room-state/src/index.js";
 import { handleSemanticCommand, parseSemanticCommand, synchronizeObsFromRoom } from "./index.js";
@@ -45,4 +46,25 @@ test("a restarted OBS adapter restores the authoritative room scene", async () =
   const restartedObs = new MockObsAdapter();
   const restored = await synchronizeObsFromRoom(restartedObs, room.getState());
   assert.equal(restored.currentProgramScene, "03 AI ROOM");
+});
+
+
+class UnavailableObsAdapter implements ObsAdapter {
+  public readonly kind = "obs-websocket" as const;
+  public async connect(): Promise<void> { throw new Error("OBS unavailable"); }
+  public async disconnect(): Promise<void> {}
+  public async getSceneState(): Promise<never> { throw new Error("OBS unavailable"); }
+  public async activateScene(): Promise<never> { throw new Error("OBS unavailable"); }
+}
+
+test("emergency silence remains authoritative when OBS is unavailable", async () => {
+  const testContext = context();
+  const result = await handleSemanticCommand({ ...testContext, obs: new UnavailableObsAdapter() }, {
+    type: "room.emergency_silence.set",
+    enabled: true,
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.room.emergencySilence, true);
+  assert.equal(result.room.routes.find((route) => route.id === "ai-to-phone")?.effective, false);
+  assert.match(result.warnings?.[0] ?? "", /OBS scene sync failed/);
 });
