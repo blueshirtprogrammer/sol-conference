@@ -1,28 +1,32 @@
-# GitHub Copilot Coding Agent Instructions
+# GitHub Copilot Coding Agent Instructions — Sol Room
 
-Before editing code, read these files in order:
+Before editing code, read:
 
 1. `/SYSTEM_PROMPT.md`
-2. `/AGENTS.md`
-3. `/CODING_AGENT_PROMPT.md`
-4. `/CODEX_PROJECT.md`
-5. every file in `/specs/`
-6. `/prompts/sol-voice-system.md`
+2. `/VISION.md`
+3. `/SOL_ROOM_MASTER_SPEC.md`
+4. `/AGENTS.md`
+5. `/CODING_AGENT_PROMPT.md`
+6. `/CODEX_PROJECT.md`
+7. `/lab/USB_C_PHONE_LAB.md`
+8. `/website/`
 
-Implement only the phase assigned by the user. Do not begin a later phase until the current phase definition of done and applicable acceptance tests pass.
+Implement only the phase assigned by the user.
 
 Critical invariants:
 
-- Android Relay sends native SMS and places native calls through supported Android APIs.
-- Humans retain ordinary Phone and Messages experiences.
-- AI conferences use Twilio Conference plus OpenAI Realtime SIP.
-- Native ChatGPT desktop voice is an optional manually started supervised audio bridge only.
-- Human participants remain connected when Sol fails or leaves.
-- Outward actions use preview and commit, signed expiring idempotent commands, restrictive contact policies, and audit events.
-- Unknown recipients require device confirmation.
-- Never auto-dial emergency, premium, or international numbers.
-- Never commit secrets, phone numbers, private profiles, transcripts, recordings, or device keys.
-- Never claim tests, builds, calls, SMS, deployments, or device flows passed unless actually executed and inspected.
-- Do not leave production TODOs, fake success responses, dead controls, or mock providers selectable in production.
+- local virtual audio/video devices are the default compatibility layer;
+- existing AI applications are media nodes, not hard-coded model APIs;
+- phone SIM, contacts, calls and messages remain native to the phone;
+- Sol Link controls approved device actions and Sol Fabric controls media routes;
+- HEAR, SPEAK, SEE, ACT and SHARE are separate permissions;
+- every node receives mix-minus and self-routes are rejected;
+- human interruption, humans-only and emergency silence are mandatory;
+- AI-to-AI turns are bounded;
+- Raspberry Pi/edge hardware is a room controller, not a requirement to run every large model;
+- Twilio, SIP and metered realtime model paths are optional later fallback adapters only;
+- never claim a USB, Bluetooth, driver, phone-call, SMS or audio path works unless it was actually verified;
+- never commit secrets, phone numbers, private profiles, transcripts, recordings or device keys;
+- do not leave fake success responses, dead controls or hidden TODOs.
 
-Use official current primary documentation for provider and platform details. Add tests with the implementation and return the verification report required by `/CODING_AGENT_PROMPT.md`.
+Use current primary platform documentation, add tests with implementation and return the evidence-based phase report required by `/CODING_AGENT_PROMPT.md`.
