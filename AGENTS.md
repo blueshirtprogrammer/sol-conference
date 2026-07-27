@@ -9,42 +9,69 @@ Build Sol Room from one reliable local digital bridge into a vendor-neutral room
 1. `SYSTEM_PROMPT.md`
 2. `VISION.md`
 3. `SOL_ROOM_MASTER_SPEC.md`
-4. `CODING_AGENT_PROMPT.md`
-5. `CODEX_PROJECT.md`
-6. `lab/USB_C_PHONE_LAB.md`
-7. `website/`
+4. `START_BUILD_HERE.md`
+5. `CODING_AGENT_PROMPT.md`
+6. `CODEX_PROJECT.md`
+7. `specs/obs-plugin.md`
+8. `lab/CURRENT_HARDWARE_TOPOLOGY.md`
+9. `lab/PHONE_LINK_OBS_BUILD_PLAN.md`
+10. `lab/USB_C_PHONE_LAB.md`
+11. `website/`
 
-The older telephony-first material under `specs/` is superseded where it conflicts with these canonical files. Twilio, SIP and metered realtime APIs are optional fallback work only.
+Twilio, SIP and metered realtime APIs are optional fallback work only. They are not the MVP and may not replace local virtual-device, Phone Link, OBS or hardware-lab work.
 
 ## Architectural invariants
 
 - Local virtual devices are the default compatibility layer.
 - Existing AI applications are ordinary media nodes.
 - The phone remains authoritative for SIM, contacts, native calls and native messages.
+- Microsoft Phone Link is the first native-cellular transport adapter; Sol Room does not rebuild Phone Link before the bridge proof.
 - The Windows/desktop fabric owns local routing, monitoring and virtual endpoints.
-- Raspberry Pi/edge hardware may own room state, physical controls and lightweight moderation.
+- OBS is the visual body and operator console, not the room authority or call-continuity layer.
+- Sol Fabric remains authoritative for room state, audio routing, policy, MCP and emergency control.
+- The external OBS WebSocket proof precedes the native OBS plugin.
+- Raspberry Pi/edge hardware may own room state replication, physical controls and lightweight moderation.
 - Media participation and tool permission are separate.
 - Every route is explicit and every node receives mix-minus.
 - Humans can silence or isolate every AI immediately.
 - AI-to-AI turns are bounded and human speech has priority.
 
+## Integration priority
+
+Use the most reliable interface available:
+
+1. typed Sol Fabric APIs and shared command handlers;
+2. official application APIs or protocols, including OBS native APIs/WebSocket;
+3. Windows UI Automation for Phone Link and unsupported desktop applications;
+4. supervised computer-use/vision fallback;
+5. manual operator action when automation cannot be verified safely.
+
+Never use coordinate clicking when a semantic or accessibility interface exists.
+
 ## Target repository shape
 
 ```text
 apps/
+  sol-fabric-service/
+  sol-room-web/
+  sol-obs-bridge/
+  sol-obs-plugin/
   sol-desktop/
   sol-link-android/
-  sol-room-web/
   sol-room-edge/
 packages/
+  contracts/
   media-graph/
-  virtual-devices/
   room-state/
+  command-policy/
+  virtual-devices/
+  phone-link-adapter/
+  obs-adapter/
   device-commands/
   agent-adapters/
   artifact-bus/
-  contracts/
   diagnostics/
+  test-harness/
 website/
 specs/
 lab/
@@ -66,6 +93,9 @@ pitch/
 11. Provide a physical/software emergency mute path early.
 12. Meet WCAG 2.2 AA and support keyboard, screen reader, reduced motion and 200% zoom.
 13. Run relevant checks and provide evidence before completing a phase.
+14. OBS restart or failure must not terminate calls or destroy room truth.
+15. A native plugin or driver is not complete merely because it compiles.
+16. Shared command handlers must serve the web UI, OBS integration and MCP; do not create divergent control logic.
 
 ## Required domain model
 
@@ -94,6 +124,7 @@ The media graph and agent/tool graph must not be the same object.
 
 - Premium communications product, not a developer console.
 - Live room is the primary interface.
+- The OBS dock and Sol Room web UI are two views of the same authoritative state.
 - Audio, visual, tool and work state appear separately.
 - Humans-only, private operator channel and emergency silence remain visible.
 - Provider jargon belongs only in diagnostics.
@@ -102,8 +133,8 @@ The media graph and agent/tool graph must not be the same object.
 
 A feature is verified only when supported by an automated test, real-device diagnostic, screenshot/video, audio loopback capture, state trace, operating-system event or written reproduction procedure.
 
-A coding agent may not mark a real device or audio capability complete merely because code compiles.
+A coding agent may not mark a real device, Phone Link, audio, OBS plugin or driver capability complete merely because code compiles or a mock passes.
 
 ## Current phase
 
-Begin with Phase 0 in `CODEX_PROJECT.md`. Do not start cloud telephony.
+Begin with Phase 0B in `START_BUILD_HERE.md`: the buildable control-plane scaffold, deterministic room/phone simulator and external OBS WebSocket proof. Do not begin cloud telephony, production audio drivers or the native OBS plugin before its gate passes.
