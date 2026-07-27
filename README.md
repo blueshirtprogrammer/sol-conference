@@ -1,66 +1,80 @@
-# Sol Conference
+# Sol Room
 
-Native, accessible voice conferencing and device communications for connecting trusted people with an explicitly disclosed AI voice participant.
+**Turn any room into a live AI company.**
 
-> **Security:** Keep this repository private before adding production configuration. Never commit credentials, real phone numbers, private contact profiles, transcripts, recordings, device keys, or production secrets. Store them in encrypted deployment secrets and private data stores.
+Sol Room is a local-first, vendor-neutral multimodal operating environment where humans, phones, media, subscribed AI voice applications, local models and working agents can hear, see, speak and create real artifacts together through standard virtual-device interfaces.
 
-## Current status
+> Keep this repository private before adding credentials, phone numbers, transcripts, recordings, private profiles or device keys.
 
-The complete bootstrap contract is on branch:
+## Start here
 
-```text
-agent/bootstrap-sol-conference
-```
+- **Interactive website:** `website/index.html`
+- **Highest instruction:** `SYSTEM_PROMPT.md`
+- **Canonical vision:** `VISION.md`
+- **Complete architecture:** `SOL_ROOM_MASTER_SPEC.md`
+- **Engineering contract:** `AGENTS.md`
+- **Universal agent prompt:** `CODING_AGENT_PROMPT.md`
+- **Goals and loops:** `CODEX_PROJECT.md`
+- **Phone hardware lab:** `lab/USB_C_PHONE_LAB.md`
+- **Spoken pitch:** `pitch/COFOUNDER_PITCH.md`
 
-and draft pull request **#1**. The `main` branch currently contains only the initial README until that PR is merged.
+## Product family
 
-## Agent entrypoints
+- **Sol Link** — phone and device gateway.
+- **Sol Fabric** — virtual audio/video routing.
+- **Sol Room** — the live human + AI room.
+- **Sol Work** — agents producing code, design, research and documents while the meeting continues.
+- **Sol Presence** — clearly labelled avatars and embodied room identity.
+- **Sol Room Edge** — Raspberry Pi/embedded room chairman.
 
-| Agent | Entry file |
-|---|---|
-| OpenAI Codex | `AGENTS.md` and `CODEX_PROJECT.md` |
-| Claude Code | `CLAUDE.md` |
-| GitHub Copilot coding agent | `.github/copilot-instructions.md` |
-| Any other coding agent | `CODING_AGENT_PROMPT.md` |
-| Repository-wide highest instruction | `SYSTEM_PROMPT.md` |
-| Runtime Sol voice behaviour | `prompts/sol-voice-system.md` |
-| Reusable repository skill | `skills/sol-conference/SKILL.md` |
+## Architectural rule
 
-All coding-agent entrypoints defer to the same system prompt, specifications, phase plan, and acceptance tests.
+The core is the local virtual-device fabric. Existing ChatGPT, Claude, Gemini and other applications connect through ordinary microphones, speakers, cameras, screens and app windows. Phones retain their native SIM, dialler, messages, contacts and communication applications.
 
-## Mandatory read order
+Do not make Twilio, SIP, OpenAI Realtime or another metered voice API the default implementation. Those are optional later fallback adapters.
 
-1. `SYSTEM_PROMPT.md`
-2. `AGENTS.md`
-3. `CODING_AGENT_PROMPT.md`
-4. `CODEX_PROJECT.md`
-5. every file in `specs/`
-6. `prompts/sol-voice-system.md`
-7. any nested platform-specific instructions
-
-## Start Codex
+## First proof
 
 ```text
-Read SYSTEM_PROMPT.md, AGENTS.md, CODING_AGENT_PROMPT.md, CODEX_PROJECT.md, every file under specs/, and prompts/sol-voice-system.md.
-
-Implement Phase 0 only.
-
-Do not start Phase 1 until pnpm install, lint, typecheck, tests, production build, and docker compose startup all pass. Do not leave TODOs, placeholder success responses, incomplete provider interfaces, or unverified claims. Commit the completed phase with the verification report required by CODING_AGENT_PROMPT.md.
+one call or meeting source
++ one existing AI voice application
++ one local human
++ clean bidirectional routing
++ mix-minus
++ immediate emergency mute
 ```
 
-## Start Claude Code
+No model voice API is required for this local demonstration.
+
+## Run the vision site
+
+```bash
+npm run dev
+```
+
+Or open `website/index.html` directly.
+
+Validate:
+
+```bash
+npm run validate
+```
+
+## Start Codex or Claude Code
 
 ```text
-Read CLAUDE.md and follow its mandatory read order. Implement Phase 0 only. Do not begin Phase 1 until the complete Phase 0 definition of done passes. Report commands and tests actually run, and do not claim unavailable live provider or device checks passed.
+Read SYSTEM_PROMPT.md, VISION.md, SOL_ROOM_MASTER_SPEC.md, AGENTS.md,
+CODING_AGENT_PROMPT.md, CODEX_PROJECT.md and lab/USB_C_PHONE_LAB.md.
+
+Implement Phase 0 only. Do not begin with Twilio, SIP, OpenAI Realtime or a
+metered voice pipeline. Report only tests and device capabilities actually
+verified.
 ```
 
-## Product architecture
+## Current branch
 
-- Android Relay is the programmable SIM gateway for native SMS and calls.
-- Humans retain ordinary Phone and Messages experiences.
-- Production AI calls use Twilio Conference plus OpenAI Realtime SIP.
-- `solctl` is the dependable automation interface; MCP wraps the same command service.
-- Windows Sol Desktop provides device control, diagnostics, Phone Link guidance, and an optional supervised native ChatGPT audio bridge.
-- Human calls remain connected when Sol fails, is muted, or leaves.
+The website and expanded product architecture are developed on:
 
-See `specs/product-requirements.md`, `specs/architecture.md`, `specs/native-integrations.md`, `specs/ui-ux.md`, and `specs/acceptance-tests.md`.
+```text
+agent/sol-room-vision-site
+```
