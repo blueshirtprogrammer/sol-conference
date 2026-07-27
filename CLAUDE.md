@@ -1,48 +1,37 @@
-# CLAUDE.md
+# CLAUDE.md — Sol Room
 
-Claude Code must treat `SYSTEM_PROMPT.md` as the repository-level system instruction and `AGENTS.md` as the engineering contract.
+Claude Code must treat `SYSTEM_PROMPT.md` as the highest repository instruction and `AGENTS.md` as the engineering contract.
 
 ## Required read order
 
 1. `SYSTEM_PROMPT.md`
-2. `AGENTS.md`
-3. `CODING_AGENT_PROMPT.md`
-4. `CODEX_PROJECT.md`
-5. every file under `specs/`
-6. `prompts/sol-voice-system.md`
-7. any nested instruction file applying to the directory being edited
-
-## Working method
-
-- Inspect the current branch and working tree before editing.
-- Identify the active phase from the user request and `CODEX_PROJECT.md`.
-- Implement only that phase.
-- Preserve unrelated changes.
-- Use current official primary documentation for provider and platform behaviour.
-- Add tests with implementation.
-- Run all applicable lint, typecheck, test, build, Docker, Android, Windows, and integration checks.
-- Never state that an unavailable live device/provider test passed.
-- Do not start a later phase until the current phase definition of done passes.
+2. `VISION.md`
+3. `SOL_ROOM_MASTER_SPEC.md`
+4. `AGENTS.md`
+5. `CODING_AGENT_PROMPT.md`
+6. `CODEX_PROJECT.md`
+7. `lab/USB_C_PHONE_LAB.md`
+8. `website/`
 
 ## Architecture constraints
 
-- Native SMS and direct calls are executed by Android Relay through supported Android APIs and the selected SIM.
-- AI conferences use Twilio Conference plus OpenAI Realtime SIP.
-- `solctl` is the dependable automation interface; MCP wraps the same command service.
-- The native ChatGPT desktop application is an optional manually started audio bridge, never an automated production dependency.
-- Human calls survive Sol failure or removal.
-- Outbound actions use preview and commit, signed idempotent commands, restrictive contact permissions, and audit events.
+- The default product is a local virtual audio/video/device fabric.
+- Existing ChatGPT, Claude, Gemini and other applications connect as ordinary media nodes.
+- Audio/video participation and tool access are separate.
+- The phone retains native SIM, contacts, calls, messages and communication applications.
+- Sol Link handles approved device commands; Sol Fabric handles media routing.
+- Every audio node receives mix-minus and humans retain emergency silence.
+- Twilio, SIP, OpenAI Realtime and other metered voice paths are optional later fallbacks only.
+- Do not substitute cloud telephony for unproven Windows/Android audio work.
 
-## Completion response
+## Working method
 
-Return:
+- Inspect branch and current phase before editing.
+- Implement only the assigned phase.
+- Add tests and evidence with implementation.
+- Never state that an unavailable hardware, audio, driver or provider check passed.
+- Keep mocks visibly labelled.
+- Preserve unrelated changes.
+- Complete the phase report required by `CODING_AGENT_PROMPT.md`.
 
-1. phase completed;
-2. meaningful changes;
-3. commands and tests actually run;
-4. live checks actually performed;
-5. blockers and unverified assumptions;
-6. privacy/security review;
-7. commit or branch state.
-
-For a fresh implementation task, begin with the exact launch prompt in `CODING_AGENT_PROMPT.md`.
+For a fresh task, execute the launch prompt in `CODING_AGENT_PROMPT.md` and begin with Phase 0 unless explicitly instructed otherwise.
