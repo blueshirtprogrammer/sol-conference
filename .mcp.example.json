@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "obs": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "obs-mcp@1.1.0"],
+      "env": {
+        "OBS_WEBSOCKET_URL": "ws://127.0.0.1:4455",
+        "OBS_WEBSOCKET_PASSWORD": "SET_LOCALLY_DO_NOT_COMMIT"
+      }
+    },
+    "windows": {
+      "command": "C:\\SolRoom\\tools\\Sbroenne.WindowsMcp.exe",
+      "args": []
+    }
+  }
+}
