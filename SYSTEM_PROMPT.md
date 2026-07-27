@@ -1,79 +1,137 @@
-# Repository System Prompt
+# SYSTEM_PROMPT.md — Sol Room Repository System Instruction
 
-This is the highest-level repository instruction for any autonomous coding agent working on Sol Conference. Platform-native instruction files such as `AGENTS.md`, `CLAUDE.md`, and `.github/copilot-instructions.md` must remain consistent with this document.
+You are working on **Sol Room**, a local-first, vendor-neutral multimodal operating environment created to connect humans, phones, media and independently licensed AI applications through standard virtual-device interfaces.
 
-## Role
+This document is the highest-order repository instruction. When another document conflicts with it, this document wins.
 
-You are a senior staff engineer, product architect, security reviewer, accessibility specialist, and verification owner for Sol Conference. You are responsible for a real communications product that can place calls and send messages. Treat outward actions, private family data, credentials, voice audio, and telephone access as sensitive.
+## Product truth
 
-## Mission
+The core product is not a Twilio conference, SIP service, OpenAI Realtime client or metered multi-agent API orchestration system.
 
-Deliver a dependable native communications platform that connects trusted humans through ordinary phone calls and SMS, and can add an explicitly disclosed AI voice participant through supported provider APIs.
+The core product is:
 
-## Truthfulness
+1. a local virtual audio/video device fabric;
+2. a secure phone/device control plane;
+3. a human-controlled room state and routing graph;
+4. a working-agent and artifact coordination layer;
+5. an optional Raspberry Pi-powered room appliance.
 
-- Never report a test, build, deployment, call, SMS, permission flow, or device behaviour as successful unless it was actually executed and the evidence was inspected.
-- Clearly distinguish implemented, mocked, configured, deployed, and verified-live states.
-- Never invent undocumented OpenAI, ChatGPT, Twilio, Android, Microsoft Phone Link, Windows, carrier, or operating-system capabilities.
-- When primary documentation conflicts with the specification, stop the affected implementation path, document the conflict, and use the safest supported design that preserves the product outcome.
+Existing AI applications and subscriptions connect as ordinary microphone, speaker, camera, screen or browser nodes. Local models and properly licensed APIs may also connect.
 
-## Product invariants
+## Highest-order technical rule
 
-1. Humans retain ordinary native Phone and Messages experiences.
-2. Android Relay sends native SMS and initiates native calls through supported Android APIs and explicit permissions.
-3. Production AI conferencing uses Twilio Conference and OpenAI Realtime SIP or a later officially supported equivalent.
-4. Native ChatGPT desktop voice is an optional supervised audio bridge only. It is manually started and never treated as an API-controlled production backend.
-5. Human participants remain connected when Sol fails, is muted, or is removed.
-6. Outward actions require preview and commit, or explicit consent under a narrowly defined trusted-contact policy.
-7. Commands are signed, expiring, idempotent, device-bound, authorised, and audited.
-8. Unknown recipients require device confirmation.
-9. Emergency, premium, and international numbers are never remotely auto-dialled.
-10. Recording is disabled by default. AI participation and recording, when enabled, are disclosed.
-11. Personal data and secrets never enter source control.
-12. The application remains understandable and usable for people with low vision or limited technical confidence.
+Build the local path before any cloud fallback.
 
-## Engineering standard
+The canonical dependency order is:
 
-- Use strict typing and schema validation at every trust boundary.
-- Keep real and mock providers behind the same typed contracts.
-- Verify Twilio and OpenAI signatures over raw request bodies.
-- Use durable state, idempotency, retries, reconciliation, graceful shutdown, and explicit failure states.
-- Use least-privilege credentials and revocable device keys.
-- Redact authentication codes, passwords, payment data, credentials, and protected identifiers from logs and transcripts.
-- Production configuration must fail closed when required providers or secrets are missing.
-- No production TODOs, dead buttons, fake success responses, or silent error swallowing.
+```text
+Windows/local audio-video fabric
+    → desktop meeting bridge
+    → Android phone control
+    → universal phone headset transport
+    → multi-agent rooms and visual stage
+    → Pi room appliance
+    → optional cloud/SIP/API adapters
+```
 
-## UX standard
+A coding agent must not begin with SIP, Twilio, OpenAI Realtime, telephony APIs or a hosted conference service unless explicitly implementing the optional fallback phase.
 
-- The main journey must be possible in no more than two deliberate actions after login.
-- The Live Call screen is the primary product surface.
-- Every state is represented by text and semantics, not colour alone.
-- Minimum interactive target is 48 by 48 CSS pixels.
-- Meet WCAG 2.2 AA, support 200% zoom, keyboard operation, reduced motion, and useful screen-reader announcements.
-- Do not expose SIP, TwiML, SIDs, webhook IDs, provider jargon, or internal diagnostics in ordinary user flows.
+## Mandatory boundaries
 
-## Execution protocol
+### MUST
 
-1. Read the mandatory files listed in `CODING_AGENT_PROMPT.md`.
-2. Inspect the current branch, existing changes, and active phase.
-3. Implement only the assigned phase.
-4. Add tests alongside implementation.
-5. Run every applicable verification command.
-6. Fix failures before claiming completion.
-7. Produce the required completion report.
-8. Commit phase work separately and preserve unrelated changes.
+- treat every human, app, phone, model and media source as a node;
+- model HEAR, SPEAK, SEE, ACT and SHARE permissions separately;
+- provide explicit source-to-destination routing;
+- implement mix-minus so nodes never receive their own delayed output;
+- provide emergency silence and humans-only privacy states;
+- keep audio/video participation separate from tool permission;
+- support the user's existing AI subscription applications through normal device interfaces;
+- support local models without requiring cloud inference;
+- use the phone's native SIM, dialler, SMS, contacts and call applications where possible;
+- keep personal data, phone numbers, credentials and transcripts out of git;
+- make AI identity visible;
+- require human confirmation for outward actions according to trust policy;
+- build in phases and verify each phase with evidence.
 
-## Stop conditions
+### MUST NOT
 
-Do not proceed with an outward live action when:
+- make Twilio, SIP or metered voice APIs the default architecture;
+- claim that a plain USB cable automatically exposes cellular-call audio;
+- claim that a normal Windows app can automatically act as a Bluetooth HFP headset without validating the transport;
+- claim official programmatic control over consumer AI voice interfaces where none exists;
+- route one AI's output back into its own microphone;
+- allow unbounded AI-to-AI speech loops;
+- infer that audio access grants phone, browser or computer control;
+- automate emergency, premium or international calling;
+- bypass provider licensing, account limits or product terms;
+- hide that a photoreal avatar is AI;
+- leave placeholder success paths, unimplemented production routes or unverifiable claims.
 
-- the intended recipient is ambiguous;
-- consent or authority is unclear;
-- a provider signature cannot be verified;
-- a command is expired, replayed, altered, or bound to another device;
-- the number is emergency, premium, international without device confirmation, or blocked by policy;
-- production has selected a mock provider;
-- recording disclosure has not occurred;
-- a requested integration would require bypassing operating-system security or reverse engineering a private application.
+## Canonical product names
 
-In these cases, fail safely, preserve human communication where possible, record an audit event, and return a precise actionable error.
+- **Sol Link** — phone and device gateway.
+- **Sol Fabric** — virtual audio/video/source routing engine.
+- **Sol Room** — live meeting and shared-stage environment.
+- **Sol Work** — tool-using agents and artifact production.
+- **Sol Presence** — avatars, spatial presence and embodied room identity.
+- **Sol Room Edge** — Raspberry Pi/embedded room controller.
+
+## Canonical buses
+
+- Audio bus
+- Visual bus
+- Room bus
+- Agent bus
+- Artifact bus
+
+Do not collapse these into one vague “AI conference” abstraction.
+
+## Media versus work
+
+An AI application can be connected to the audio room and have no tools.
+
+A coding agent can be working privately and have no spoken room output.
+
+The UI and state model must show these independently:
+
+```text
+Audio: connected | muted | isolated | unavailable
+Visual: watching | presenting | private | none
+Tools: connected | restricted | executing | none
+Work: idle | working | blocked | ready
+```
+
+## Phase discipline
+
+Read, in order:
+
+1. `SYSTEM_PROMPT.md`
+2. `VISION.md`
+3. `SOL_ROOM_MASTER_SPEC.md`
+4. `AGENTS.md`
+5. `CODING_AGENT_PROMPT.md`
+6. `CODEX_PROJECT.md`
+7. `lab/USB_C_PHONE_LAB.md`
+8. `pitch/`
+
+Existing telephony-first documents under `specs/` are superseded wherever they conflict with this instruction or `SOL_ROOM_MASTER_SPEC.md`. They may only be used as reference for a later optional cloud-fallback phase.
+
+Do not implement a later phase to avoid completing a difficult earlier one.
+
+Each phase ends with:
+
+- working demonstration;
+- tests;
+- limitations recorded;
+- screenshots or diagnostics where relevant;
+- no unsupported claims;
+- verification report committed to the repository.
+
+## Current objective
+
+The repository's current product objective is the local-first proof:
+
+> one call or meeting source, one existing AI voice application, one local human, clean bidirectional routing, mix-minus, monitoring and emergency mute.
+
+The website under `website/` is the canonical visual explanation of the product and must remain aligned with these instructions.
