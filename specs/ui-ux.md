@@ -1,190 +1,89 @@
-# UI and User Flows
+# UI and User Experience — Sol Room
+
+The canonical visual reference is `website/index.html`.
 
 ## Product character
-A calm, premium consumer communication tool. It must not look like a call-centre console or AI demo. Use high contrast, large controls, plain language and visible recovery states.
 
-## Visual system
-- Dark neutral background, raised charcoal surfaces, white primary text.
-- Accent: accessible blue. Participant accents: Mum purple, Josh blue, Sol teal.
-- Geist Sans; Geist Mono for timers.
-- Minimum control target 48x48 px; primary mobile call buttons at least 72 px high.
-- Rounded cards, restrained shadows, reduced-motion support.
-- WCAG 2.2 AA and text scaling to 200%.
+- premium communications instrument;
+- legible at room distance;
+- calmer than OBS and simpler than a broadcast console;
+- vendor-neutral;
+- visible human control;
+- deep diagnostics available without contaminating ordinary use.
 
-## Navigation
-Desktop: Home, Live Call, Contacts, History, Messages, Settings, Diagnostics.
-Mobile: Home, Call, History, Settings.
-An active call creates a persistent live indicator.
+## Primary views
 
-## Home
-Header: “Good morning, Josh” and “Who would you like to speak with?”
+### Home
 
-Primary cards, in order:
-1. **Call Mum with Sol** — calls Mum and adds Sol after answer.
-2. **Start family call** — Mum, Josh and Sol.
-3. **Join from my phone**.
-4. **Add Sol to a live call**.
+Start/resume a room, show connected phones/edge devices, recent scenes, first-proof launcher and current privacy state.
 
-Display recent activity underneath. On mobile, cards become a vertical stack and **Call Mum with Sol** remains first.
+### Live Room
 
-Before calling, show:
+- shared stage;
+- participant channels;
+- separate audio, visual, tool and work state;
+- workstreams;
+- room health;
+- scene presets;
+- humans-only and emergency silence.
 
-```text
-Call Mum now?
-Mum will receive a normal phone call.
-Sol will join after she answers.
-Mum: 04•• ••• ••71
-[ Call Mum ] [ Cancel ]
-```
+### Routing Matrix
 
-## Live Call
-Top bar: call status, timer and connection state.
+Source rows and destination columns, locked self-routes, explicit routed/isolated/muted states, audio/visual tabs and keyboard-operable switches.
 
-Participant cards:
-- Mum: calling, ringing, connected, speaking, muted, disconnected, reconnecting, failed.
-- Sol: waiting, joining, listening, preparing a response, speaking, using a tool, muted, removed, failed.
-- Josh: not in call, calling, ringing, connected, speaking, declined, failed.
+### Device Link
 
-Each card includes name, role, connection state, speaking state and relevant controls. Active speaker uses text, waveform and an outline—not colour alone.
+Paired phones/edge devices, selected SIM, contact permissions, command queue, call/SMS status, USB/LAN/Bluetooth transport state and diagnostics.
 
-Desktop uses participants left and live transcript right. Mobile stacks participants and opens transcript in a bottom sheet.
+### Agent Setup
 
-Primary controls:
-- Mute Sol
-- Remove Sol
-- Call Josh
-- Send Mum SMS
-- More actions
-- End conference
+Select app/process, virtual input/output, role, permitted audio/visual sources, separate tool adapter, loopback test and saved agent slot.
 
-Removing Sol must clearly state: “Mum and Josh will remain connected.”
+### Scene Builder
 
-If Sol fails:
+Select participants, program/monitor/private buses, shared-stage source, floor policy, AI turn limit and physical privacy behaviour.
 
-```text
-Sol could not join.
-Mum and Josh can continue speaking without Sol.
-[ Try adding Sol again ] [ Continue without Sol ]
-```
+### Diagnostics
 
-## Dropped call flow
-When Mum disconnects unexpectedly:
+Actual OS devices, sample rates, channel count, route graph, loopback level, latency, clipping, cycle detection, phone transport state and redacted logs.
+
+## Mandatory live controls
+
+Always visible:
+
+- Mute all AI;
+- Humans only;
+- Emergency silence;
+- Private operator channel;
+- Current floor;
+- Active stage;
+- Room health.
+
+## Channel status
+
+Display independently:
 
 ```text
-Mum’s call disconnected
-Calling her back in 5 seconds…
-[ Cancel callback ]
+Audio: Connected / Listening / Speaking / Muted / Isolated
+Visual: Watching / Presenting / Private / None
+Tools: Connected / Restricted / Executing / None
+Work: Idle / Working / Blocked / Ready
 ```
 
-Then:
+Do not use one vague “online” badge.
 
-```text
-Calling Mum back…
-Attempt 1 of 1
-```
+## Room-distance mode
 
-Failure:
+Increase text, participant tiles, active speaker indicator, privacy state and physical-control confirmation.
 
-```text
-Mum did not answer
-No more automatic attempts will be made.
-[ Try again ] [ Send SMS ] [ End conference ]
-```
+## Avatar requirements
 
-## Transcript
-Speaker, timestamp and final utterance. Support live, paused, disabled and unavailable states.
+- AI label remains visible;
+- speaking follows actual channel audio;
+- private/work states are not portrayed as fake human emotion;
+- consent is required for a real-person likeness;
+- avatar may be disabled without affecting audio or work.
 
-Provide **Pause transcript**. Redact payment cards, OTPs, passwords and protected identifiers as `[ Sensitive information hidden ]`.
+## Accessibility
 
-## Post-call summary
-Show participants, date/time, duration, objective summary, decisions, action items, unresolved questions, dropped-call events and tool failures. Avoid unsupported emotional or medical inference.
-
-Actions: Send summary to Mum, Add reminder, View transcript, Back home.
-
-## Setup wizard
-1. Welcome.
-2. Verify Josh’s phone.
-3. Add Mum/Yvonne as a trusted contact.
-4. AI disclosure and privacy settings.
-5. Dropped-call behaviour.
-6. Test call.
-7. Completion.
-
-Recording defaults off. “Announce when Sol joins” and “Allow Mum to ask Sol to leave” default on.
-
-## Contacts
-Cards show masked number, verification and permissions. New contacts default restricted.
-
-Fields: name, relationship, phone, preferred language, may Sol call, may Sol access private context, emergency contact, confirmation policy.
-
-## Settings
-Sections: Profile, Phone numbers, Sol voice, Call behaviour, Privacy, Notifications, Accessibility, Integrations, Security, Billing and limits.
-
-Accessibility includes Standard/Large/Extra large, high contrast, reduce motion and simplified Mum Mode.
-
-## Mum Mode
-Only four large actions:
-- Talk to Sol
-- Call Josh
-- Ask Sol to call Josh
-- Help
-
-During call:
-- Make louder
-- Repeat that
-- Call Josh
-- Give me privacy
-- End call
-
-Do not use provider or engineering terminology.
-
-## Android Relay UI
-Home status:
-- device online
-- calls ready
-- SMS ready
-- selected SIM
-- desktop connected
-- gateway connected
-- recent activity
-
-Pending SMS:
-
-```text
-Sol wants to send a message
-To: Mum
-Message: ...
-[ Send ] [ Edit ] [ Cancel ]
-```
-
-Pending call:
-
-```text
-Call Mum?
-This will place a normal mobile call using your selected SIM.
-[ Call now ] [ Open dialler ] [ Cancel ]
-```
-
-## Windows Desktop UI
-- Device status
-- Phone Link setup/status
-- CLI status
-- Connect Phone Link
-- Select ChatGPT Audio
-- Start Bridge
-- Mute Sol
-- Give Humans Privacy
-- Stop Bridge
-- diagnostics bundle
-
-Never show or capture ChatGPT credentials.
-
-## Required Playwright journeys
-A. Josh calls Mum with Sol.
-B. Mum calls Sol and Josh joins.
-C. Mum disconnects and receives one callback.
-D. Sol is removed while Mum and Josh remain connected.
-E. OpenAI fails but humans continue.
-F. Browser refresh restores the call.
-G. Full keyboard-only workflow.
-H. 200% zoom and reduced motion.
+Target WCAG 2.2 AA, 48px controls, keyboard operation, screen-reader route/room announcements, reduced motion, high contrast and 200% zoom.
